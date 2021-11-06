@@ -22,5 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('view/', include('repo_views.urls')),
     path('healthcheck/', views.HealthcheckAPIView.as_view()),
-    path('<path:resource>', views.GithubProxyAPIView.as_view())
+    path('<path:resource>/', views.GithubProxyAPIView.as_view())
 ]

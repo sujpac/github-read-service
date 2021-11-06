@@ -3,7 +3,7 @@ from django.core.cache import cache
 from urllib.parse import urlparse
 import logging, pickle
 
-from . import github_api, constants
+from . import github_service, constants
 
 def _setup():
     """Sets up Redis instance and logger"""
@@ -36,7 +36,7 @@ def retrieve_org(org_name):
     pickled_org = redis.get(key)
 
     if pickled_org is None:
-        org = github_api.get_org(org_name)
+        org = github_service.get_org(org_name)
         pickled_org = pickle.dumps(org)
         redis.set(key, pickled_org, ex=constants.CACHE_TTL)
     else:
@@ -51,7 +51,7 @@ def retrieve_repos(org_name):
 
     if pickled_repos is None:
         org = retrieve_org(org_name)
-        repos = github_api.get_repos(org_name, org)
+        repos = github_service.get_repos(org_name, org)
         pickled_repos = pickle.dumps(repos)
         redis.set(key, pickled_repos, constants.CACHE_TTL)
     else:
