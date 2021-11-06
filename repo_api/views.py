@@ -6,12 +6,15 @@ from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_cookie
 from django.conf import settings
 from rest_framework import status
+from django.core.cache import cache
+
+from redis import Redis, ConnectionError
+import logging
 
 from github import Github
-import os
 from pprint import pprint
-
-cache = {}
+from urllib.parse import urlparse
+import os, json, pickle
 
 
 class RepoRankViewSet(viewsets.ViewSet):
@@ -24,9 +27,25 @@ class RepoRankViewSet(viewsets.ViewSet):
         token = os.getenv(settings.API_KEY_NAME)
         ghub = Github(token)
         org = ghub.get_organization('parse-community')
+        print(cache._server)
+        redis_url = urlparse(cache._server)
+        print(redis_url.hostname, redis_url.port)
+
+        r = Redis(host=redis_url.hostname, port=redis_url.port)
+        logging.basicConfig()
+        logger = logging.getLogger('redis-log')
+        try:
+            r.ping()
+        except ConnectionError:
+            logger.error("Redis isn't running. Try 'redis-server'")
+
+        pickled_org = pickle.dumps(org)
+        r.set('org', pickled_org)
+        unpacked_org = pickle.loads(r.get('org'))
+        pprint(unpacked_org)
+        print(unpacked_org == org)
+
         repos = [repo for repo in org.get_repos()]
-        cache[request.path] = org.raw_data
-        print(cache[request.path])
         repos.sort(key=lambda r: r.forks_count, reverse=True)
         return Response([{'rank': i + 1,
                           'repo': r.full_name,
