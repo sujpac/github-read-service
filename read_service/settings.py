@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-3ohr3=xc+v_9_j@f$f*1%v3u@6no027q-+0^9y*hj-!41f)_8v'
-KEY_NAME = 'GITHUB_TOKEN'
+API_KEY_NAME = 'GITHUB_TOKEN'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -97,7 +97,7 @@ CACHES = {
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "default"
-CACHE_TTL = 60 * 60 * 12
+CACHE_TTL = 60 * 15
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
