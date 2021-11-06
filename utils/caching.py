@@ -6,6 +6,7 @@ import logging, pickle
 from . import github_api, constants
 
 def _setup():
+    """Sets up Redis instance and logger"""
     global redis, logger
     redis_url = urlparse(cache._server)
     redis = Redis(host=redis_url.hostname, port=redis_url.port)
@@ -16,9 +17,11 @@ redis = logger = None
 _setup()
 
 def get_redis_instance():
+    """Returns Redis instance"""
     return redis
 
 def is_redis_running():
+    """Chhecks if Redis Server is running"""
     try:
         redis.ping()
     except ConnectionError:
@@ -28,6 +31,7 @@ def is_redis_running():
         return True
 
 def retrieve_org(org_name):
+    """Gets org from cache, or, gets org from Github and sets entry in cache"""
     key = constants.ORG_PREFIX + org_name
     pickled_org = redis.get(key)
 
@@ -41,6 +45,7 @@ def retrieve_org(org_name):
     return org
 
 def retrieve_repos(org_name):
+    """Gets repos from cache, or, gets repos from Github and sets entry in cache"""
     key = constants.REPOS_PREFIX + org_name
     pickled_repos = redis.get(key)
 

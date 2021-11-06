@@ -1,5 +1,5 @@
 # github-read-service
-A service that provides custom API's to read organizational data from Github. It is implemented with Python, Django, and Django Rest Framework. The service uses Redis for caching to allow for better performance and scaling without reaching API rate limits. The organization used by default is [parse-community](https://github.com/parse-community), this can be changed by modifying the DEFAULT_ORG variable in utils/constants.py.
+A service that provides custom API's to read organizational data from Github. It is implemented with Python, Django, and Django Rest Framework. The service uses Redis for caching to allow for better performance and scaling without reaching API rate limits. The organization used by default is [parse-community](https://github.com/parse-community), this can be changed by setting the DEFAULT_ORG constant in utils/constants.py.
 
 ## API Documentation
 
