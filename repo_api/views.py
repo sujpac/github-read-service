@@ -26,7 +26,7 @@ class RepoRankViewSet(viewsets.ViewSet):
         # pprint('MAKING A GITHUB REQUEST!')
         token = os.getenv(settings.API_KEY_NAME)
         ghub = Github(token)
-        org = ghub.get_organization('parse-community')
+        org = ghub.get_organization(settings.ORG_NAME)
         print(cache._server)
         redis_url = urlparse(cache._server)
         print(redis_url.hostname, redis_url.port)
@@ -40,13 +40,23 @@ class RepoRankViewSet(viewsets.ViewSet):
             logger.error("Redis isn't running. Try 'redis-server'")
 
         pickled_org = pickle.dumps(org)
-        r.set('org', pickled_org)
+        r.set('org', pickled_org, ex=60*5)
         unpacked_org = pickle.loads(r.get('org'))
         pprint(unpacked_org)
+        print(org.public_repos)
         print(unpacked_org == org)
+        print(r.ttl('org'))
 
         repos = [repo for repo in org.get_repos()]
         repos.sort(key=lambda r: r.forks_count, reverse=True)
+
+        pickled_repos = pickle.dumps(repos)
+        r.set('repos', pickled_repos, ex=60*5)
+        unpacked_repos = pickle.loads(r.get('repos'))
+        print(unpacked_repos)
+        print(unpacked_repos == repos)
+        print(r.ttl('repos'))
+
         return Response([{'rank': i + 1,
                           'repo': r.full_name,
                           'num_forks': r.forks_count} for i, r in enumerate(repos[:N])])

@@ -23,6 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-3ohr3=xc+v_9_j@f$f*1%v3u@6no027q-+0^9y*hj-!41f)_8v'
 API_KEY_NAME = 'GITHUB_TOKEN'
 
+# Constants
+ORG_NAME = 'parse-community'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
