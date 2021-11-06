@@ -1,0 +1,55 @@
+from redis import Redis, ConnectionError
+from django.core.cache import cache
+from urllib.parse import urlparse
+import logging, pickle
+
+from . import github_api, constants
+
+def _setup():
+    global redis, logger
+    redis_url = urlparse(cache._server)
+    redis = Redis(host=redis_url.hostname, port=redis_url.port)
+    logging.basicConfig()
+    logger = logging.getLogger('redis-log')
+
+redis = logger = None
+_setup()
+
+def get_redis_instance():
+    return redis
+
+def is_redis_running():
+    try:
+        redis.ping()
+    except ConnectionError:
+        logger.error("Redis isn't running. Try running 'redis-server'")
+        return False
+    else:
+        return True
+
+def retrieve_org(org_name):
+    key = constants.ORG_PREFIX + org_name
+    pickled_org = redis.get(key)
+
+    if pickled_org is None:
+        org = github_api.get_org(org_name)
+        pickled_org = pickle.dumps(org)
+        redis.set(key, pickled_org, ex=constants.CACHE_TTL)
+    else:
+        org = pickle.loads(pickled_org)
+    
+    return org
+
+def retrieve_repos(org_name):
+    key = constants.REPOS_PREFIX + org_name
+    pickled_repos = redis.get(key)
+
+    if pickled_repos is None:
+        org = retrieve_org(org_name)
+        repos = github_api.get_repos(org_name, org)
+        pickled_repos = pickle.dumps(repos)
+        redis.set(key, pickled_repos, constants.CACHE_TTL)
+    else:
+        repos = pickle.loads(pickled_repos)
+    
+    return repos

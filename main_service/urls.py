@@ -1,4 +1,4 @@
-"""read_service URL Configuration
+"""main_service URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.2/topics/http/urls/
@@ -25,6 +25,6 @@ router.register('', views.HealthcheckViewSet, basename='healthcheck-viewset')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('view/', include('repo_api.urls')),
-    path('healthcheck/', include(router.urls)),
+    path('view/', include('repo_views.urls')),
+    path('', include(router.urls)),
 ]

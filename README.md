@@ -1,7 +1,14 @@
 # github-read-service
-A service that provides custom API's to read organizational data from Github. It is implemented with Python, Django, and Django Rest Framework. The service uses Redis for caching to allow for better performance and scaling without reaching API rate limits. The organization used by default is [parse-community](https://github.com/parse-community), this can be changed by modifying the ORG_NAME variable in the settings.py file.
+A service that provides custom API's to read organizational data from Github. It is implemented with Python, Django, and Django Rest Framework. The service uses Redis for caching to allow for better performance and scaling without reaching API rate limits. The organization used by default is [parse-community](https://github.com/parse-community), this can be changed by modifying the DEFAULT_ORG variable in utils/constants.py.
 
 ## API Documentation
+
+We use parse-community as the Github org:
+```
+/orgs/parse-community
+/orgs/parse-community/members
+/orgs/parse-community/repos
+```
 
 The following custom views for organization repositories are provided by the app and are cached periodically:
 ```
@@ -10,13 +17,6 @@ The following custom views for organization repositories are provided by the app
 /view/top/N/open_issues (Top-N repos by open issues)
 /view/top/N/stars (Top-N repos by stars)
 /view/top/N/watchers (Top-N repos by watchers)
-```
-
-The following API endpoints are also periodically cached:
-```
-/orgs/parse-community
-/orgs/parse-community/members
-/orgs/parse-community/repos
 ```
 
 All other API endpoints are proxied through the service to Github. E.g.:
