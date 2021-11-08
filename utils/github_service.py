@@ -1,7 +1,10 @@
-import os, requests
+import os, requests, logging
 from github import Github
 
 from . import constants
+
+
+logger = logging.getLogger(__name__)
 
 
 def is_github_available():
@@ -15,7 +18,8 @@ def get_org(org_name):
     ghub = Github(token)
     try:
         return ghub.get_organization(org_name)
-    except:
+    except BaseException as err:
+        logger.error(f"Unexpected {err=}, {type(err)=}")
         return None
 
 
@@ -25,10 +29,10 @@ def get_repos(org_name, org=None):
         org = get_org(org_name)
         if not org:
             return None
-
     try:
-        repos = org.get_repos
-    except:
+        repos = org.get_repos()
+    except BaseException as err:
+        logger.error(f"Unexpected {err=}, {type(err)=}")
         return None
     return [repo for repo in repos]
 
@@ -41,5 +45,6 @@ def proxy_request(resource):
     headers = {'Authorization': f'token {token}'}
     try:
         return requests.get(query_url, headers=headers, params=params)
-    except:
+    except BaseException as err:
+        logger.error(f"Unexpected {err=}, {type(err)=}")
         return None

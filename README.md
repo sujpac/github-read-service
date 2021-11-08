@@ -35,7 +35,7 @@ Finally, also provided is a healthcheck endpoint that returns an HTTP 200 when t
 
 
 ## Setup
-The following instructions are written for Mac/Linux machines:
+The following instructions are written for MacOS/Linux machines with the latest version of [Python 3](https://www.python.org/downloads/) installed:
 
 1. Clone repository
 ```
@@ -76,9 +76,9 @@ source env/bin/activate
 python manage.py runserver
 ```
 
-6. Test the API on your browser by requesting local app URL's, e.g., go [here](http://127.0.0.1:8000/view/top/10/forks/) to get the top 10 repos by forks.
+6. Test the service on by testing API endpoints through your browser, e.g., go [to this URL](http://127.0.0.1:8000/view/top/10/forks/) to get the top 10 repos by forks. Test how the service responds to cache failures by ending the ```redis server``` process or running ```redis-cli``` and testing out commands such as ```flushall``` which deletes all keys. Simulate Github outage by testing the service with no server-side Internet connection with or without cached data.
 
-7. To test multiple instances locally on different ports, run the Django app again passing in a new port number (on different terminal windows)
+7. To test multiple instances locally on different ports, run the Django app again passing in a new port number (on a different terminal window)
 ```
 cd ~/github-read-service/
 source env/bin/activate

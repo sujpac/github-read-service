@@ -6,14 +6,9 @@ import logging, pickle
 from . import github_service, constants
 
 
-def _setup():
-    """Sets up Redis instance and logger"""
-    global redis, logger
-    redis_url = urlparse(cache._server)
-    redis = Redis(host=redis_url.hostname, port=redis_url.port)
-    logging.basicConfig()
-    logger = logging.getLogger('redis-log')
-_setup()
+redis_url = urlparse(cache._server)
+redis = Redis(host=redis_url.hostname, port=redis_url.port)
+logger = logging.getLogger(__name__)
 
 
 def get_redis_instance():
@@ -48,7 +43,8 @@ def retrieve_org(org_name):
             org = pickle.loads(pickled_org)
         
         return org
-    except:
+    except BaseException as err:
+        logger.error(f"Unexpected {err=}, {type(err)=}")
         return None
 
 
@@ -71,5 +67,6 @@ def retrieve_repos(org_name):
             repos = pickle.loads(pickled_repos)
         
         return repos
-    except:
+    except BaseException as err:
+        logger.error(f"Unexpected {err=}, {type(err)=}")
         return None

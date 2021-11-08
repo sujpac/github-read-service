@@ -20,7 +20,7 @@ class HealthcheckAPIView(APIView):
             return Response({'message': 'Github API service is not available'},
                 status=status.HTTP_503_SERVICE_UNAVAILABLE)
         else:
-            return Response({'message': 'Service ready.'},
+            return Response({'message': 'Service ready'},
                 status=status.HTTP_200_OK)
 
 
