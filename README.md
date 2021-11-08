@@ -1,5 +1,5 @@
 # github-read-service
-A service that provides custom API's to read organizational data from Github. It is implemented with Python, Django, and Django Rest Framework. The service uses Redis as an in-memory cache to facilitate better performance and scaling the app without reaching API rate limits. The organization used by default is [parse-community](https://github.com/parse-community), this can be changed by setting the DEFAULT_ORG constant in utils/constants.py.
+This is a service that provides custom API's to read organizational data from Github. It is implemented with Python, Django, and Django Rest Framework. The service uses Redis as an in-memory cache to facilitate better performance, as well as to be able to scale the app without risk of crossing API rate limits. The organization used by default is [parse-community](https://github.com/parse-community) - this can be changed by modifying DEFAULT_ORG in utils/constants.py.
 
 
 ## API Documentation
@@ -22,9 +22,9 @@ The following custom views for organization repositories are provided by the app
 All other API endpoints are proxied through the service to Github. E.g.:
 ```
 [https://api.github.com/{path}]
-/users/octocat/
+/zen
 /gists
-/parse-community/parse-server
+/users/octocat/
 /repos/facebook/react/issues
 ```
 
@@ -35,7 +35,8 @@ Finally, also provided is a healthcheck endpoint that returns an HTTP 200 when t
 
 
 ## Setup
-The following setup instructions were written for Mac/Linux machines; if using Windows, do an Internet search for the appropriate analogue to each instruction.
+The following instructions are written for Mac/Linux machines:
+
 1. Clone repository
 ```
 cd ~
