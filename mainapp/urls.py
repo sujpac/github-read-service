@@ -1,4 +1,4 @@
-"""main_service URL Configuration
+"""mainapp URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.2/topics/http/urls/
@@ -20,7 +20,7 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('view/', include('repo_views.urls')),
+    path('view/', include('toprepos.urls')),
     path('healthcheck/', views.HealthcheckAPIView.as_view()),
     path('<path:resource>/', views.GithubProxyAPIView.as_view())
 ]

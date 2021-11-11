@@ -20,15 +20,16 @@ The following custom views for organization repositories are provided by the app
 ```
 
 All other API endpoints are proxied through the service to Github. E.g.:
+[/zen](http://127.0.0.1:8000/{resource}/) outputs the response from a GET /zen request to the [Github API](https://api.github.com/zen)
 ```
-[https://api.github.com/{path}]
 /zen
 /gists
 /users/octocat/
 /repos/facebook/react/issues
+[etc.]
 ```
 
-Finally, also provided is a healthcheck endpoint that returns an HTTP 200 when the service is ready to serve responses:
+Lastly, also provided is a healthcheck endpoint that returns an HTTP 200 when the service is ready to serve responses:
 ```
 /healthcheck
 ```
@@ -76,7 +77,7 @@ source env/bin/activate
 python manage.py runserver
 ```
 
-6. Test the service on by testing API endpoints through your browser, e.g., go [to this URL](http://127.0.0.1:8000/view/top/10/forks/) to get the top 10 repos by forks. Test how the service responds to cache failures by ending the ```redis-server``` process or running ```redis-cli``` and testing out commands such as ```flushall``` which deletes all keys. Simulate Github outage by testing the service with no server-side Internet connection with or without cached data.
+6. Test the service on by testing API endpoints through your browser, e.g., go [to this URL](http://127.0.0.1:8000/view/top/10/forks/) to get the top 10 repos by forks. Test how the service responds to cache failures by ending the ```redis-server``` process or running ```redis-cli``` and testing out commands such as ```flushall``` which deletes all keys. Simulate Github outage by testing the service with no server-side Internet connection with or without cached data. Try proxying an invalid resource to the GitHub API.
 
 7. To test multiple instances locally on different ports, run the Django app again passing in a new port number (on a different terminal window)
 ```

@@ -35,6 +35,6 @@ class GithubProxyAPIView(APIView):
             return Response(status=status.HTTP_503_SERVICE_UNAVAILABLE)
         else:
             try:
-                return Response(response.json())
+                return Response(response.json(), status=response.status_code)
             except JSONDecodeError:
-                return Response(response.text)
+                return Response(response.text, status=response.status_code)
