@@ -24,7 +24,7 @@ All other API endpoints are proxied through the service to Github. E.g.:
 ```
 /zen
 /gists
-/users/octocat/
+/users/octocat
 /repos/facebook/react/issues
 [etc.]
 ```

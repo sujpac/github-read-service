@@ -8,6 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 def is_github_available():
+    """Checks if the Github service is available"""
     response = proxy_request('zen')
     return response and response.status_code == 200
 
